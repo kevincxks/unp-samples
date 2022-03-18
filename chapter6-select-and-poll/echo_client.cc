@@ -35,7 +35,7 @@ void my_str_cli(FILE *fp, int sockfd) {
 
     FD_SET(sockfd, &rset);
     maxfdp1 = max(sockfd, fileno(fp)) + 1;
-    Select(maxfdp1, &rset, nullptr, nullptr, nullptr);
+    int n = Select(maxfdp1, &rset, nullptr, nullptr, nullptr);
 
     if (FD_ISSET(sockfd, &rset)) {
       if ((n = Read(sockfd, buf, MAXLINE)) == 0) {
@@ -63,13 +63,9 @@ void my_str_cli(FILE *fp, int sockfd) {
 
 
 int main (int argc, char *argv[]) {
-
-
   int clientfd;
 
   clientfd = Socket(AF_INET, SOCK_STREAM, 0);
-
-
   sockaddr_in serv_addr;
 
   bzero(&serv_addr, sizeof(serv_addr));
