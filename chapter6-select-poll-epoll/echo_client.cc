@@ -22,7 +22,6 @@ void my_str_cli(FILE *fp, int sockfd) {
   int maxfdp1;
 
   char buf[MAXLINE];
-  int n;
 
   bool stdineof = false;
 
@@ -51,6 +50,7 @@ void my_str_cli(FILE *fp, int sockfd) {
     if (FD_ISSET(fileno(fp), &rset)) {
       if ((n = Read(fileno(fp), buf, MAXLINE)) == 0) {
         stdineof = true;
+        // shutdown可以直接关闭不需要引用计数为0
         shutdown(sockfd, SHUT_WR);
         FD_CLR(fileno(fp), &rset);
         continue;

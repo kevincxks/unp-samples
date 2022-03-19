@@ -37,14 +37,7 @@ int main (int argc, char *argv[]) {
   Signal(SIGPIPE, sig_pipe);
   Connect(clientfd, (SA *)&serv_addr, sizeof(serv_addr));
 
-  std::string tmp;
-  std::cin >> tmp;
-  // str_cli(stdin, clientfd);
-
-  char buf[] = "hello";
-  cout << writen(clientfd, buf, sizeof(buf)) << endl;
-  cout << writen(clientfd, buf, sizeof(buf)) << endl;
-  err_sys("error:");
+  str_cli(stdin, clientfd);
   
   return 0;
 }

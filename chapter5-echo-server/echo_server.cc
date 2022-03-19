@@ -12,14 +12,16 @@ void my_echo(int fd) {
   char buf[MAXCHAR];
   ssize_t n;
   while (true) {
-
     if ((n = read(fd, buf, MAXCHAR)) > 0) {
       writen(fd, buf, n);
     // 需要处理系统调用被中断的情况，此处重新发起即可
     } else if (n == -1 && errno == EINTR) {
       continue;
-    } else {
+    } else if (n == -1) {
       err_sys("str_echo: read error");
+      // 对于已经收到FIN的socket调用read会返回0,多次调用都会返回0
+    } else {
+      return;
     }
   }
 
@@ -100,7 +102,7 @@ int main (int argc, char *argv[]) {
       
       // 文件描述符会在父子进程拷贝，close会使得文件表项引用数减一，减到0才会发送FIN
       Close(listenfd);
-      str_echo(connfd);
+      my_echo(connfd);
 
       // 子进程结束会给父进程一个SIGCHLD信号
       // 进程退出也会关闭所有的文件描述符
