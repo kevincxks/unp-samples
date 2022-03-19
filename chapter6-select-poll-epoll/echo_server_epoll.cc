@@ -72,6 +72,7 @@ int main(int argc, char *argv[]) {
 
     // events只负责输出检测到的就绪事件
     // 返回就绪的文件描述符个数
+    // 不再需要O(n)的轮询
     int ret = epoll_wait(epollfd, events, MAX_EVENT_NUMBER, -1);
     if (ret < 0)
       err_sys("epoll wait fail");
