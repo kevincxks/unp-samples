@@ -55,9 +55,12 @@ socket发生错误时会设置该值
 
 缓冲区大小
 
+
+
 * SO_RECLOWAT和SO_SNDLOWAT
 
 低水位标记，select会用到
+
 
 
 * TCP_NODELAY
